@@ -1,0 +1,1549 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{AB Testing using Python}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{capstone-project-ab-testing-course-by-google}{%
+\section{Capstone Project: A/B Testing Course by
+Google}\label{capstone-project-ab-testing-course-by-google}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Section \ref{1}
+\item
+  Section \ref{2} Section \ref{21} Section \ref{22} Section \ref{23}
+  Section \ref{24}
+\item
+  Section \ref{3} Section \ref{31} Section \ref{32}
+\item
+  Section \ref{4} Section \ref{41} Section \ref{42}
+\item
+  Section \ref{5} Section \ref{51} Section \ref{52}
+\item
+  Section \ref{6} Section \ref{61} Section \ref{62} Section \ref{63}
+\item
+  Section \ref{7}
+\item
+  Section \ref{8}
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{math}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{udacitys-ab-testing-course-by-google}{%
+\subsection{1. Udacity's A/B Testing Course by
+Google}\label{udacitys-ab-testing-course-by-google}}
+
+I recently finished the A/B Testing course by Google on Udacity. I
+highly recommend this course to people who want to learn how A/B testing
+is done, and to data scientists who are interested in how data science,
+python and statistics are applied in real-life business scenarios. The
+course summarized how to run an A/B test into 5 steps: 1. Choose
+invariant and evalution metrics. 2. Choose significance level (alpha),
+statistical power (1-beta) and practical significance level (the minimum
+change we want to observe in order to launch the change). 3. Calculate
+required sample size. 4. Run the test for control and experiment groups.
+5. Analyze the results, calulate confidernce intervals of evaludation
+metrics, and draw conclusions.
+
+    This notebook is a capstone project for this course. The goal of this
+capstone project is to utlize the skills learned in this course and
+apply them to a business case using real life data. We want to gain
+insights about if adding an extra screening step after a student clicks
+the ``start free trial'' button will reduce the number of frustrated
+students who left the free trial because they couldn't commit enough
+hours to the course.
+
+    \hypertarget{experiment-overview-free-trial-screener}{%
+\subsection{2. Experiment Overview: Free Trial
+Screener}\label{experiment-overview-free-trial-screener}}
+
+    \hypertarget{description-of-original-conditions}{%
+\subsubsection{2.1 Description of original
+conditions}\label{description-of-original-conditions}}
+
+\begin{itemize}
+\tightlist
+\item
+  At the time of this experiment, Udacity currently has two options on
+  the course overview page: ``start free trial'', and ``access course
+  materials''.
+\item
+  If the student clicks ``start free trial'', they will be asked to
+  enter their credit card information, and then they will be enrolled in
+  a free trial for the paid version of the course. After 14 days, they
+  will automatically be charged unless they cancel first.
+\item
+  If the student clicks ``access course materials'', they will be able
+  to view the videos and take the quizzes for free, but they will not
+  receive coaching support or a verified certificate, and they will not
+  submit their final project for feedback.
+\end{itemize}
+
+    \hypertarget{description-of-the-experimental-change}{%
+\subsubsection{2.2 Description of the experimental
+change}\label{description-of-the-experimental-change}}
+
+\begin{itemize}
+\tightlist
+\item
+  In the experiment, Udacity tested a change where if the student
+  clicked ``start free trial'', they were asked how much time they had
+  available to devote to the course.
+\item
+  If the student indicated 5 or more hours per week, they would be taken
+  through the checkout process as usual.
+\item
+  If they indicated fewer than 5 hours per week, a message would appear
+  indicating that Udacity courses usually require a greater time
+  commitment for successful completion, and suggesting that the student
+  might like to access the course materials for free.
+\item
+  At this point, the student would have the option to continue enrolling
+  in the free trial, or access the course materials for free instead.
+  This screenshot shows what the experiment looks like.
+  \includegraphics{Experiment.png}
+\end{itemize}
+
+    \hypertarget{experiment-hypothesis}{%
+\subsubsection{2.3 Experiment hypothesis}\label{experiment-hypothesis}}
+
+The hypothesis was that this might set clearer expectations for students
+upfront, thus reducing the number of frustrated students who left the
+free trial because they didn't have enough time---without significantly
+reducing the number of students to continue past the free trial and
+eventually pay and complete the course. If this hypothesis held true,
+Udacity could improve the overall student experience and improve
+coaches' capacity to support students who are likely to complete the
+course.
+
+    \hypertarget{how-data-are-tracked}{%
+\subsubsection{2.4 How data are tracked}\label{how-data-are-tracked}}
+
+\textbf{The unit of diversion is a cookie}, although if the student
+enrolls in the free trial, they are tracked by user-id from that point
+forward. The same user-id cannot enroll in the free trial twice. For
+users that do not enroll, their user-id is not tracked in the
+experiment, even if they were signed in when they visited the course
+overview page.
+
+    \hypertarget{metric-choice}{%
+\subsection{3. Metric Choice}\label{metric-choice}}
+
+    Which of the following metrics should we choose to measure for this
+experiment and why? For each metric we choose, we need to decide whether
+it is an invariant metric or an evaluation metric. The practical
+significance boundary for each metric, that is, the difference that
+would have to be observed before that was a meaningful change for the
+business, is given in parentheses. All practical significance boundaries
+are given as absolute changes. Any place ``unique cookies'' are
+mentioned, the uniqueness is determined by day. (That is, the same
+cookie visiting on different days would be counted twice.) User-ids are
+automatically unique since the site does not allow the same user-id to
+enroll twice.
+
+    \begin{itemize}
+\tightlist
+\item
+  Number of cookies: That is, number of unique cookies to view the
+  course overview page. (dmin=3000)
+\item
+  Number of user-ids: That is, number of users who enroll in the free
+  trial. (dmin=50)
+\item
+  Number of clicks: That is, number of unique cookies to click the
+  ``Start free trial'' button (which happens before the free trial
+  screener is trigger). (dmin=240)
+\item
+  Click-through-probability: That is, number of unique cookies to click
+  the ``Start free trial'' button divided by number of unique cookies to
+  view the course overview page. (dmin=0.01)
+\item
+  Gross conversion: That is, number of user-ids to complete checkout and
+  enroll in the free trial divided by number of unique cookies to click
+  the ``Start free trial'' button. (dmin= 0.01)
+\item
+  Retention: That is, number of user-ids to remain enrolled past the
+  14-day boundary (and thus make at least one payment) divided by number
+  of user-ids to complete checkout. (dmin=0.01)
+\item
+  Net conversion: That is, number of user-ids to remain enrolled past
+  the 14-day boundary (and thus make at least one payment) divided by
+  the number of unique cookies to click the ``Start free trial'' button.
+  (dmin= 0.0075)
+\end{itemize}
+
+    \hypertarget{choose-invariant-metrics}{%
+\subsubsection{3.1 Choose invariant
+metrics}\label{choose-invariant-metrics}}
+
+    Invariant metrics are used for ``sanity checks'', i.e., to make sure the
+way we collect data for the experiment is randomized. We should pick
+metrics that are not affected by the experiment, so they stay the same
+in both our control and experiment groups.
+
+Number of cookies, number of clicks and click-through-probability (CTR)
+are chosen as invariant metrics, as they are tracked BEFORE students see
+the experiment change; these metrics are not affected by the
+experimental change.
+
+Number of user-ids are not chosen as an invariant metric, because they
+are only tracked AFTER users enroll in a free trial; if they are not
+enrolled, user-ids are not tracked.
+
+    \begin{longtable}[]{@{}cccc@{}}
+\toprule
+\begin{minipage}[b]{0.39\columnwidth}\centering
+Invariant Metrics\strut
+\end{minipage} & \begin{minipage}[b]{0.18\columnwidth}\centering
+Notation\strut
+\end{minipage} & \begin{minipage}[b]{0.23\columnwidth}\centering
+Definition\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\centering
+Dmin\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.39\columnwidth}\centering
+\# of cookies\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+Ck\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\centering
+\# of unique cookies to view the course overview page\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+3000\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.39\columnwidth}\centering
+\# of clicks\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+Cl\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\centering
+\# of unique cookies to click the ``Start free trial'' button\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+240\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.39\columnwidth}\centering
+Click-through-probability\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+CTP\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\centering
+Cl/Ck\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.01\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+    \hypertarget{choose-evaluation-metrics}{%
+\subsubsection{3.2 Choose evaluation
+metrics}\label{choose-evaluation-metrics}}
+
+    Evaluation metrics are the metrics we expect to change, and represent
+practical business goals that we aim to achieve. We choose gross
+conversion, retention and net conversion as evaluation metrics, as they
+are tracked AFTER the customers click the ``Start free trial'' and there
+is a change between the control group and the experiment group.
+
+    \begin{longtable}[]{@{}cccc@{}}
+\toprule
+\begin{minipage}[b]{0.39\columnwidth}\centering
+Evaluation Metrics\strut
+\end{minipage} & \begin{minipage}[b]{0.18\columnwidth}\centering
+Notation\strut
+\end{minipage} & \begin{minipage}[b]{0.23\columnwidth}\centering
+Definition\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\centering
+Dmin\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.39\columnwidth}\centering
+Gross conversion\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+GrCon\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\centering
+\# of enrolled/Cl\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.01\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.39\columnwidth}\centering
+Retention\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+Ret\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\centering
+\# of paid/\# of enrolled = NetCon/GrCon\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.01\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.39\columnwidth}\centering
+Net conversion\strut
+\end{minipage} & \begin{minipage}[t]{0.18\columnwidth}\centering
+NetCon\strut
+\end{minipage} & \begin{minipage}[t]{0.23\columnwidth}\centering
+\# of paid (and thus make at least one payment)/Cl\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\centering
+0.0075\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+    \hypertarget{measuring-standard-deviation}{%
+\subsection{4. Measuring Standard
+Deviation}\label{measuring-standard-deviation}}
+
+    \hypertarget{baseline-values}{%
+\subsubsection{4.1 Baseline values}\label{baseline-values}}
+
+    Udacity provided rough estimates for these metrics (the numbers have
+been changed from Udacity's true number); these are how the metrics
+behave before the change, aka, our baseline values.
+
+    \begin{longtable}[]{@{}ccc@{}}
+\toprule
+Metrics & Definition & Estimator\tabularnewline
+\midrule
+\endhead
+\# of cookies & Unique cookies to view course overview page per day &
+40000\tabularnewline
+\# of clicks & Unique cookies to click ``Start free trial'' per day &
+3200\tabularnewline
+\# of enrollments & Enrollments in the free trial per day &
+660\tabularnewline
+CTP & Click-through-probability on ``Start free trial'' &
+0.08\tabularnewline
+Gross conversion & Probability of enrollment, given click &
+0.20625\tabularnewline
+Retention & Probability of payment, given enroll & 0.53\tabularnewline
+Net conversion & Probability of payment, given click &
+0.1093125\tabularnewline
+\bottomrule
+\end{longtable}
+
+    \hypertarget{calculate-the-standard-deviation}{%
+\subsubsection{4.2 Calculate the standard
+deviation}\label{calculate-the-standard-deviation}}
+
+    For metrics we selected as our evalution metric: gross conversion,
+retention and net conversion, let's make an analytic estimate of its
+standard deviation, given \textbf{a sample size of 5000 cookies}
+visiting the course overview page.
+
+    First, we need to scale estimators to our sample size. In this case,
+from 40000 "unique cookies to view course overview page per day: to 5000
+for our sample size.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Put base estimators into a dictionary}
+\PY{n}{baseline} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cookies}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{40000}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{clicks}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{3200}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{enrollments}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mi}{660}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CTP}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+m+mf}{0.08}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GrCon}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mf}{0.20625}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Retention}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mf}{0.53}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{NetCon}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+m+mf}{0.1093125}\PY{p}{\PYZcb{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Scale estimators to our sample size}
+\PY{n}{baseline2} \PY{o}{=} \PY{n}{baseline}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)}
+\PY{n}{baseline2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cookies}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{5000}
+\PY{n}{baseline2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{clicks}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{baseline}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{clicks}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{5000}\PY{o}{/}\PY{l+m+mi}{40000}\PY{p}{)}
+\PY{n}{baseline2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{enrollments}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{baseline}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{enrollments}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{5000}\PY{o}{/}\PY{l+m+mi}{40000}\PY{p}{)}
+\PY{n}{baseline2}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\{'cookies': 5000,
+ 'clicks': 400.0,
+ 'enrollments': 82.5,
+ 'CTP': 0.08,
+ 'GrCon': 0.20625,
+ 'Retention': 0.53,
+ 'NetCon': 0.1093125\}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    In order to estimate variances analytically, we can assume probability
+(\(\hat {p}\)) are binomially distributed; so we can use the following
+equation to calculate standard deviation. This equation only works when
+the unit of diversion of the experiment is equal to unit of the analysis
+(the denominator of the metric formula). In our case, both the unit of
+diversion and the unit of analysis are cookies.
+
+    \(SD=\sqrt{\frac{\hat{p}*(1-\hat{p})}{n}}\)
+
+ \(\hat {p}\): baseline proability for the event to occur
+
+\emph{n}: sample size
+
+    \begin{itemize}
+\tightlist
+\item
+  Gross Conversion
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{G} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{n}{G}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{baseline2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GrCon}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{G}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{baseline2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{clicks}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{c+c1}{\PYZsh{} the unit of diversion is clicks (after scaled)}
+\PY{n}{G}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{G}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{G}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{n}{G}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n}{G}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.0202
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{itemize}
+\tightlist
+\item
+  Retention
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{R} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{n}{R}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{baseline2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Retention}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{R}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{baseline2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{enrollments}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{c+c1}{\PYZsh{} the unit of diversion is enrollment (after scaled)}
+\PY{n}{R}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{R}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{R}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{n}{R}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n}{R}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.0549
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{itemize}
+\tightlist
+\item
+  Net Conversion
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{N} \PY{o}{=} \PY{p}{\PYZob{}}\PY{p}{\PYZcb{}}
+\PY{n}{N}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{baseline2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{NetCon}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{N}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{baseline2}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{clicks}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{c+c1}{\PYZsh{} the unit of diversion is clicks (after scaled)}
+\PY{n}{N}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{N}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{N}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{p}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{n}{N}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n}{N}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{sd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.0156
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{experiment-sizing}{%
+\subsection{5. Experiment Sizing}\label{experiment-sizing}}
+
+    \hypertarget{choose-sample-size}{%
+\subsubsection{5.1 Choose sample size}\label{choose-sample-size}}
+
+    In order to calculate the sample size, we need to know the significance
+level alpha (set to 0.05), statistical power (1-beta, set to 0.8),
+baseline conversion rate (provided by Udacity) and minimum detectable
+effect (Dmin, provided by Udacity). We plug these 4 values into this
+\href{http://www.evanmiller.org/ab-testing/sample-size.html}{online
+calculator} and get the sample size. Here is an illustration of the
+sample size online calculator.
+
+    \includegraphics{sample_size.png}
+
+    Once we have calulated the sample size, we can convert it to pageviews.
+Here is a summary of \textbf{pageviews} required for each evaluation
+metrics to achieve targeted statistical power.
+
+    Gross Conversion - Baseline conversion: 20.625\% - Minimum Detectable
+effect: 1\% - Alpha: 5\% - Power: 80\% - Sample size (calulated using
+the online calculator): 25,835 enrollments/group - Number of groups: 2
+(experiment and control) - Total sample size = 25835*2 = 51,670
+enrollments - Clicks/pageviews: 3200/40,000 - Pageview required =
+enrollments/(clicks/pageviews)=51670/(3200/40000) = 645,875
+
+    Retention - Baseline conversion: 53\% - Minimum Detectable effect: 1\% -
+Alpha: 5\% - Power: 80\% - Sample size (calulated using the online
+calculator): 39,155 enrollments/group - Number of groups: 2 (experiment
+and control) - Total sample size = 39155*2 = 78,230 enrollments -
+Enrollments/pageviews: 660/40,000 - Pageview required =
+enrollments/(enrollment/pageviews)=78230/(660/40000) = 4,741,212
+
+    Net Conversion - Baseline conversion: 10.93125\% - Minimum Detectable
+effect: 0.75\% - Alpha: 5\% - Power: 80\% - Sample size (calulated using
+the online calculator): 27,413 enrollments/group - Number of groups: 2
+(experiment and control) - Total sample size = 27413*2 = 54,826
+enrollments - Clicks/pageviews: 3200/40,000 - Pageview required =
+enrollments/(clicks/pageviews)=54826/(3200/40000) = 685,325
+
+    The required pageviews is the maximum of pageviews for all three
+evaluation metrics, i.e., 4,741,212 pageviews.
+
+    \hypertarget{choose-duration-vs-exposure}{%
+\subsubsection{5.2 Choose duration vs
+exposure}\label{choose-duration-vs-exposure}}
+
+    Let's assume we direct 80\% of the web traffic to this experiment. Given
+40,000 pageviews per day, the experiment would take 148 day to achieve
+the required 4,741,212 pageviews. This would take too long and is not
+practical, since We have to wait for 5 months for the experimental
+results in order to make a business decision. Therefore we have to drop
+rentention as an evaluation metric. Now we are left with two evaluation
+metrics; this reduced the number of pageviews required to 685,325. The
+experiment will takes about 22 days to achieve the required pageviews.
+
+    \hypertarget{experimental-analysis}{%
+\subsection{6. Experimental Analysis}\label{experimental-analysis}}
+
+    \hypertarget{sanity-checks}{%
+\subsubsection{6.1 Sanity checks}\label{sanity-checks}}
+
+    Let's check if the \textbf{invariant} metrics are randomly split between
+the control and experiment group. We can assume a binomial distribution
+here; confidence level is set at 95\%. If sanity check fails, look at
+the day-by-day data to see if they are any anomalies that can give us
+some insights into what might be the problem. Do not proceed to the rest
+of the analysis unless all sanity checks pass.
+
+    The data are provided by Udacity as two spreadsheets (control and
+experimental groups). We'll load them into pandas dataframe.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{con} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{control.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{exp} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{experiment.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{con}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+           Date  Pageviews  Clicks  Enrollments  Payments
+0   Sat, Oct 11       7723     687        134.0      70.0
+1   Sun, Oct 12       9102     779        147.0      70.0
+2   Mon, Oct 13      10511     909        167.0      95.0
+3   Tue, Oct 14       9871     836        156.0     105.0
+4   Wed, Oct 15      10014     837        163.0      64.0
+5   Thu, Oct 16       9670     823        138.0      82.0
+6   Fri, Oct 17       9008     748        146.0      76.0
+7   Sat, Oct 18       7434     632        110.0      70.0
+8   Sun, Oct 19       8459     691        131.0      60.0
+9   Mon, Oct 20      10667     861        165.0      97.0
+10  Tue, Oct 21      10660     867        196.0     105.0
+11  Wed, Oct 22       9947     838        162.0      92.0
+12  Thu, Oct 23       8324     665        127.0      56.0
+13  Fri, Oct 24       9434     673        220.0     122.0
+14  Sat, Oct 25       8687     691        176.0     128.0
+15  Sun, Oct 26       8896     708        161.0     104.0
+16  Mon, Oct 27       9535     759        233.0     124.0
+17  Tue, Oct 28       9363     736        154.0      91.0
+18  Wed, Oct 29       9327     739        196.0      86.0
+19  Thu, Oct 30       9345     734        167.0      75.0
+20  Fri, Oct 31       8890     706        174.0     101.0
+21   Sat, Nov 1       8460     681        156.0      93.0
+22   Sun, Nov 2       8836     693        206.0      67.0
+23   Mon, Nov 3       9437     788          NaN       NaN
+24   Tue, Nov 4       9420     781          NaN       NaN
+25   Wed, Nov 5       9570     805          NaN       NaN
+26   Thu, Nov 6       9921     830          NaN       NaN
+27   Fri, Nov 7       9424     781          NaN       NaN
+28   Sat, Nov 8       9010     756          NaN       NaN
+29   Sun, Nov 9       9656     825          NaN       NaN
+30  Mon, Nov 10      10419     874          NaN       NaN
+31  Tue, Nov 11       9880     830          NaN       NaN
+32  Wed, Nov 12      10134     801          NaN       NaN
+33  Thu, Nov 13       9717     814          NaN       NaN
+34  Fri, Nov 14       9192     735          NaN       NaN
+35  Sat, Nov 15       8630     743          NaN       NaN
+36  Sun, Nov 16       8970     722          NaN       NaN
+    \end{Verbatim}
+
+    The meaning of each column is: - Pageviews: Number of unique cookies to
+view the course overview page that day. - Clicks: Number of unique
+cookies to click the course overview page that day. - Enrollments:
+Number of user-ids to enroll in the free trial that day. - Payments:
+Number of user-ids who who enrolled on that day to remain enrolled for
+14 days and thus make a payment. (Note that the date for this column is
+the start date, that is, the date of enrollment, rather than the date of
+the payment. The payment happened 14 days later. Because of this, the
+enrollments and payments are tracked for 14 fewer days than the other
+columns.)
+
+    Our three invariant metrics are cookies (pageviews), clicks and CTP
+(clicks/pageviews). Let's do sanity checks on them one by one.
+
+    \begin{itemize}
+\tightlist
+\item
+  Pageview: number of unique cookies to view the course overview page
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{cookies\PYZus{}con} \PY{o}{=} \PY{n}{con}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pageviews}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{n}{cookies\PYZus{}exp} \PY{o}{=} \PY{n}{exp}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Pageviews}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{n}{cookies\PYZus{}total} \PY{o}{=} \PY{n}{cookies\PYZus{}con} \PY{o}{+} \PY{n}{cookies\PYZus{}exp}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number of unique cookies to view the course page in the control group:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{cookies\PYZus{}con}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number of unique cookies to view the course page in the experiment group:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{cookies\PYZus{}exp}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+number of unique cookies to view the course page in the control group: 345543
+number of unique cookies to view the course page in the experiment group: 344660
+    \end{Verbatim}
+
+    We eyeballed the numbers and they look close to each other. We expect
+the amount of pageviews in the control and experiment groups to be split
+even, roughtly 50\% each. The expected probability of a sample getting
+assigned to the control group is 0.5. Next we alculate the standard
+deviation and confidence interval and check if the observed probability
+p\_hat is within the confidence interval.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{p} \PY{o}{=} \PY{l+m+mf}{0.5}
+\PY{n}{p\PYZus{}hat} \PY{o}{=} \PY{n}{cookies\PYZus{}con}\PY{o}{/}\PY{n}{cookies\PYZus{}total}
+\PY{n}{sd} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{p\PYZus{}hat}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{p\PYZus{}hat}\PY{p}{)}\PY{o}{/}\PY{n}{cookies\PYZus{}total}\PY{p}{)}
+\PY{n}{m} \PY{o}{=} \PY{l+m+mf}{1.96}\PY{o}{*}\PY{n}{sd}
+\PY{n}{lower\PYZus{}bound}\PY{p}{,} \PY{n}{upper\PYZus{}bound} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{p}\PY{o}{+}\PY{n}{m}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{p}\PY{o}{\PYZhy{}}\PY{n}{m}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Obersved p\PYZus{}hat}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{p\PYZus{}hat}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The confidence interval is (}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{lower\PYZus{}bound}\PY{p}{,}\PY{n}{upper\PYZus{}bound}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Obersved p\_hat 0.5006
+The confidence interval is (0.5012,0.4988)
+    \end{Verbatim}
+
+    p\_hat is within the confidence interval, which means the control and
+experiments are randomly split. The invariant metric cookies passed the
+sanity check.
+
+    \begin{itemize}
+\tightlist
+\item
+  Clicks: Number of unique cookies to click the course overview page
+  that day.
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{clicks\PYZus{}con} \PY{o}{=} \PY{n}{con}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Clicks}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{n}{clicks\PYZus{}exp} \PY{o}{=} \PY{n}{exp}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Clicks}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{n}{clicks\PYZus{}total} \PY{o}{=} \PY{n}{clicks\PYZus{}con} \PY{o}{+} \PY{n}{clicks\PYZus{}exp}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number of unique cookies to click the course page in the control group:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{clicks\PYZus{}con}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{number of unique cookies to click the course page in the experiment group:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{clicks\PYZus{}exp}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+number of unique cookies to click the course page in the control group: 28378
+number of unique cookies to click the course page in the experiment group: 28325
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{p\PYZus{}hat} \PY{o}{=} \PY{n}{clicks\PYZus{}con}\PY{o}{/}\PY{n}{clicks\PYZus{}total}
+\PY{n}{sd} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{p\PYZus{}hat}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{p\PYZus{}hat}\PY{p}{)}\PY{o}{/}\PY{n}{clicks\PYZus{}total}\PY{p}{)}
+\PY{n}{m} \PY{o}{=} \PY{l+m+mf}{1.96}\PY{o}{*}\PY{n}{sd}
+\PY{n}{lower\PYZus{}bound}\PY{p}{,} \PY{n}{upper\PYZus{}bound} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{p}\PY{o}{+}\PY{n}{m}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{p}\PY{o}{\PYZhy{}}\PY{n}{m}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Observed p\PYZus{}hat}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{p\PYZus{}hat}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The confidence interval is (}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{lower\PYZus{}bound}\PY{p}{,}\PY{n}{upper\PYZus{}bound}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Observed p\_hat 0.5005
+The confidence interval is (0.5041,0.4959)
+    \end{Verbatim}
+
+    \begin{itemize}
+\tightlist
+\item
+  CTP (clicks/cookies)
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{ctp\PYZus{}con} \PY{o}{=} \PY{n}{clicks\PYZus{}con}\PY{o}{/}\PY{n}{cookies\PYZus{}con}
+\PY{n}{ctp\PYZus{}exp} \PY{o}{=} \PY{n}{clicks\PYZus{}exp}\PY{o}{/}\PY{n}{cookies\PYZus{}exp}
+\PY{n}{d\PYZus{}hat} \PY{o}{=} \PY{n}{ctp\PYZus{}exp} \PY{o}{\PYZhy{}} \PY{n}{ctp\PYZus{}con}
+\PY{n}{p\PYZus{}pooled} \PY{o}{=} \PY{n}{clicks\PYZus{}total}\PY{o}{/}\PY{n}{cookies\PYZus{}total}
+\PY{n}{sd\PYZus{}pooled} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{p\PYZus{}pooled}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{p\PYZus{}pooled}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{cookies\PYZus{}con}\PY{o}{+}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{cookies\PYZus{}exp}\PY{p}{)}\PY{p}{)}
+\PY{n}{m} \PY{o}{=} \PY{l+m+mf}{1.96}\PY{o}{*}\PY{n}{sd\PYZus{}pooled}
+\PY{n}{lower\PYZus{}bound}\PY{p}{,} \PY{n}{upper\PYZus{}bound} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{l+m+mi}{0}\PY{o}{+}\PY{n}{m}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{l+m+mi}{0}\PY{o}{\PYZhy{}}\PY{n}{m}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Oberved difference}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{d\PYZus{}hat}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The confidence interval is (}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{lower\PYZus{}bound}\PY{p}{,}\PY{n}{upper\PYZus{}bound}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Oberved difference 0.0001
+The confidence interval is (0.0013,-0.0013)
+    \end{Verbatim}
+
+    We can see they all three invariant metrics passed sanity checks.
+
+    \hypertarget{effec-size-tests}{%
+\subsubsection{6.2 Effec size tests}\label{effec-size-tests}}
+
+    For \textbf{evaluation} metrics, give a 95\% confidence level for the
+difference between the experiment and control groups, calculate its
+confidence interval. Check if each metric is statistically siginificant
+and practically significant. A metric is statistically significant if
+the confidence interval does not include 0 (i.e., we can be confident
+there was a change); and it is practically significant if the confidence
+interval does not include the practical significance boundary Dmin
+(i.e., you can be confident there is a change that matters to the
+business.)
+
+    \begin{itemize}
+\tightlist
+\item
+  Gross conversion
+\end{itemize}
+
+    Note: the spreadsheet provided by Udacity contains data for cookies and
+clicks for 37 days, and enrollments and payments for 23 days. So we we
+work with gross conversion and net conversion, we will only use the data
+for 23 days. We expect the gross conversion drops in the experimental
+group.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Count the total clicks for the 23 days where the \PYZsq{}Enrollments\PYZsq{} column is not NaN}
+\PY{n}{clicks\PYZus{}con} \PY{o}{=} \PY{n}{con}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Clicks}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{con}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Enrollments}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{notnull}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{n}{clicks\PYZus{}exp} \PY{o}{=} \PY{n}{exp}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Clicks}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{exp}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Enrollments}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{notnull}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{enrollments\PYZus{}con} \PY{o}{=} \PY{n}{con}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Enrollments}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{n}{enrollments\PYZus{}exp} \PY{o}{=} \PY{n}{exp}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Enrollments}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{n}{g\PYZus{}con} \PY{o}{=} \PY{n}{enrollments\PYZus{}con}\PY{o}{/}\PY{n}{clicks\PYZus{}con}
+\PY{n}{g\PYZus{}exp} \PY{o}{=} \PY{n}{enrollments\PYZus{}exp}\PY{o}{/}\PY{n}{clicks\PYZus{}exp}
+\PY{n}{g\PYZus{}diff} \PY{o}{=} \PY{n}{g\PYZus{}exp}\PY{o}{\PYZhy{}}\PY{n}{g\PYZus{}con}
+\PY{n}{g\PYZus{}pooled} \PY{o}{=} \PY{p}{(}\PY{n}{enrollments\PYZus{}con}\PY{o}{+}\PY{n}{enrollments\PYZus{}exp}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{clicks\PYZus{}con}\PY{o}{+}\PY{n}{clicks\PYZus{}exp}\PY{p}{)}
+\PY{n}{g\PYZus{}sd} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{g\PYZus{}pooled}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{g\PYZus{}pooled}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{clicks\PYZus{}con}\PY{o}{+}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{clicks\PYZus{}exp}\PY{p}{)}\PY{p}{)}
+\PY{n}{m} \PY{o}{=} \PY{l+m+mf}{1.96}\PY{o}{*}\PY{n}{g\PYZus{}sd}
+\PY{n}{lower\PYZus{}bound}\PY{p}{,} \PY{n}{upper\PYZus{}bound} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{g\PYZus{}diff}\PY{o}{\PYZhy{}}\PY{n}{m}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{g\PYZus{}diff}\PY{o}{+}\PY{n}{m}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The change due to the experiment is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{g\PYZus{}diff}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The confidence interval is (}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{lower\PYZus{}bound}\PY{p}{,}\PY{n}{upper\PYZus{}bound}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The change due to the experiment is -0.0206
+The confidence interval is (-0.0291,-0.012)
+    \end{Verbatim}
+
+    The observed change is statistically significant since the confidence
+interval does not include 0. And it is practically significant since the
+confidence interval does not include the minimum detectable effect
+-0.01.
+
+    The change is both statiscally and practically signifcant. We have a
+negative change of 2.06\%, which means the gross conversion rate in the
+experiment group has dropped 2.06\% and this change is significant. This
+matches with our expecation, as when customers click the ``Start free
+trial'' button, they are asked how many hours they can dedicate to the
+study per week; this change should make customers think twice before
+they go ahead and enroll, hence the decrease gross conversion rate.
+
+    \begin{itemize}
+\tightlist
+\item
+  Net conversion
+\end{itemize}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{payments\PYZus{}con} \PY{o}{=} \PY{n}{con}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Payments}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{n}{payments\PYZus{}exp} \PY{o}{=} \PY{n}{exp}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Payments}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\PY{n}{n\PYZus{}con} \PY{o}{=} \PY{n}{payments\PYZus{}con}\PY{o}{/}\PY{n}{clicks\PYZus{}con}
+\PY{n}{n\PYZus{}exp} \PY{o}{=} \PY{n}{payments\PYZus{}exp}\PY{o}{/}\PY{n}{clicks\PYZus{}exp}
+\PY{n}{n\PYZus{}diff} \PY{o}{=} \PY{n}{n\PYZus{}exp}\PY{o}{\PYZhy{}}\PY{n}{n\PYZus{}con}
+\PY{n}{n\PYZus{}pooled} \PY{o}{=} \PY{p}{(}\PY{n}{payments\PYZus{}con}\PY{o}{+}\PY{n}{payments\PYZus{}exp}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{clicks\PYZus{}con}\PY{o}{+}\PY{n}{clicks\PYZus{}exp}\PY{p}{)}
+\PY{n}{n\PYZus{}sd} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{n\PYZus{}pooled}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{\PYZhy{}}\PY{n}{n\PYZus{}pooled}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{clicks\PYZus{}con}\PY{o}{+}\PY{l+m+mi}{1}\PY{o}{/}\PY{n}{clicks\PYZus{}exp}\PY{p}{)}\PY{p}{)}
+\PY{n}{m} \PY{o}{=} \PY{l+m+mf}{1.96}\PY{o}{*}\PY{n}{n\PYZus{}sd}
+\PY{n}{lower\PYZus{}bound}\PY{p}{,} \PY{n}{upper\PYZus{}bound} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{n\PYZus{}diff}\PY{o}{\PYZhy{}}\PY{n}{m}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} \PY{n+nb}{round}\PY{p}{(}\PY{n}{n\PYZus{}diff}\PY{o}{+}\PY{n}{m}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The change due to the experiment is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{n\PYZus{}diff}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The confidence interval is (}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{,}\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{)}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{lower\PYZus{}bound}\PY{p}{,}\PY{n}{upper\PYZus{}bound}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The observed change is statistically significant if the confidence interval does not include 0. And it is practically significant if it does not include the minimum detectable effect \PYZhy{}0.0075.}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The change due to the experiment is -0.0049
+The confidence interval is (-0.0116,0.0019)
+The observed change is statistically significant if the confidence interval does
+not include 0. And it is practically significant if it does not include the
+minimum detectable effect -0.0075.
+    \end{Verbatim}
+
+    We got a very small change of -0.49\%, which is neither statistically
+significant, nor practically significant.
+
+    \hypertarget{sign-tests}{%
+\subsubsection{6.3 Sign tests}\label{sign-tests}}
+
+    For each \textbf{evalution} metric, let's count day-by-day how many days
+in the experiment group is lower than the control group out of 23 days,
+and this is the number of successes for our binomial model. We then
+cauculate the p-value and compare it with alpha.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Let\PYZsq{}s merge the two dataframes since we need to compare day\PYZhy{}to\PYZhy{}day gross conversion and net conversion in control and expeirment group}
+\PY{n}{combine} \PY{o}{=} \PY{n}{con}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{n}{exp}\PY{p}{,} \PY{n}{how}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{inner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{lsuffix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}con}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{rsuffix}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZus{}exp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{combine}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+       Date\_con  Pageviews\_con  Clicks\_con  Enrollments\_con  Payments\_con  \textbackslash{}
+0   Sat, Oct 11           7723         687            134.0          70.0
+1   Sun, Oct 12           9102         779            147.0          70.0
+2   Mon, Oct 13          10511         909            167.0          95.0
+3   Tue, Oct 14           9871         836            156.0         105.0
+4   Wed, Oct 15          10014         837            163.0          64.0
+5   Thu, Oct 16           9670         823            138.0          82.0
+6   Fri, Oct 17           9008         748            146.0          76.0
+7   Sat, Oct 18           7434         632            110.0          70.0
+8   Sun, Oct 19           8459         691            131.0          60.0
+9   Mon, Oct 20          10667         861            165.0          97.0
+10  Tue, Oct 21          10660         867            196.0         105.0
+11  Wed, Oct 22           9947         838            162.0          92.0
+12  Thu, Oct 23           8324         665            127.0          56.0
+13  Fri, Oct 24           9434         673            220.0         122.0
+14  Sat, Oct 25           8687         691            176.0         128.0
+15  Sun, Oct 26           8896         708            161.0         104.0
+16  Mon, Oct 27           9535         759            233.0         124.0
+17  Tue, Oct 28           9363         736            154.0          91.0
+18  Wed, Oct 29           9327         739            196.0          86.0
+19  Thu, Oct 30           9345         734            167.0          75.0
+20  Fri, Oct 31           8890         706            174.0         101.0
+21   Sat, Nov 1           8460         681            156.0          93.0
+22   Sun, Nov 2           8836         693            206.0          67.0
+23   Mon, Nov 3           9437         788              NaN           NaN
+24   Tue, Nov 4           9420         781              NaN           NaN
+25   Wed, Nov 5           9570         805              NaN           NaN
+26   Thu, Nov 6           9921         830              NaN           NaN
+27   Fri, Nov 7           9424         781              NaN           NaN
+28   Sat, Nov 8           9010         756              NaN           NaN
+29   Sun, Nov 9           9656         825              NaN           NaN
+30  Mon, Nov 10          10419         874              NaN           NaN
+31  Tue, Nov 11           9880         830              NaN           NaN
+32  Wed, Nov 12          10134         801              NaN           NaN
+33  Thu, Nov 13           9717         814              NaN           NaN
+34  Fri, Nov 14           9192         735              NaN           NaN
+35  Sat, Nov 15           8630         743              NaN           NaN
+36  Sun, Nov 16           8970         722              NaN           NaN
+
+       Date\_exp  Pageviews\_exp  Clicks\_exp  Enrollments\_exp  Payments\_exp
+0   Sat, Oct 11           7716         686            105.0          34.0
+1   Sun, Oct 12           9288         785            116.0          91.0
+2   Mon, Oct 13          10480         884            145.0          79.0
+3   Tue, Oct 14           9867         827            138.0          92.0
+4   Wed, Oct 15           9793         832            140.0          94.0
+5   Thu, Oct 16           9500         788            129.0          61.0
+6   Fri, Oct 17           9088         780            127.0          44.0
+7   Sat, Oct 18           7664         652             94.0          62.0
+8   Sun, Oct 19           8434         697            120.0          77.0
+9   Mon, Oct 20          10496         860            153.0          98.0
+10  Tue, Oct 21          10551         864            143.0          71.0
+11  Wed, Oct 22           9737         801            128.0          70.0
+12  Thu, Oct 23           8176         642            122.0          68.0
+13  Fri, Oct 24           9402         697            194.0          94.0
+14  Sat, Oct 25           8669         669            127.0          81.0
+15  Sun, Oct 26           8881         693            153.0         101.0
+16  Mon, Oct 27           9655         771            213.0         119.0
+17  Tue, Oct 28           9396         736            162.0         120.0
+18  Wed, Oct 29           9262         727            201.0          96.0
+19  Thu, Oct 30           9308         728            207.0          67.0
+20  Fri, Oct 31           8715         722            182.0         123.0
+21   Sat, Nov 1           8448         695            142.0         100.0
+22   Sun, Nov 2           8836         724            182.0         103.0
+23   Mon, Nov 3           9359         789              NaN           NaN
+24   Tue, Nov 4           9427         743              NaN           NaN
+25   Wed, Nov 5           9633         808              NaN           NaN
+26   Thu, Nov 6           9842         831              NaN           NaN
+27   Fri, Nov 7           9272         767              NaN           NaN
+28   Sat, Nov 8           8969         760              NaN           NaN
+29   Sun, Nov 9           9697         850              NaN           NaN
+30  Mon, Nov 10          10445         851              NaN           NaN
+31  Tue, Nov 11           9931         831              NaN           NaN
+32  Wed, Nov 12          10042         802              NaN           NaN
+33  Thu, Nov 13           9721         829              NaN           NaN
+34  Fri, Nov 14           9304         770              NaN           NaN
+35  Sat, Nov 15           8668         724              NaN           NaN
+36  Sun, Nov 16           8988         710              NaN           NaN
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{combine}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Date\_con           37
+Pageviews\_con      37
+Clicks\_con         37
+Enrollments\_con    23
+Payments\_con       23
+Date\_exp           37
+Pageviews\_exp      37
+Clicks\_exp         37
+Enrollments\_exp    23
+Payments\_exp       23
+dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} We only need rows where Enrollments and Payments are not NaN}
+\PY{n}{combine} \PY{o}{=} \PY{n}{combine}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Enrollments\PYZus{}con}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{notnull}\PY{p}{(}\PY{p}{)}\PY{p}{]}
+\PY{n}{combine}\PY{o}{.}\PY{n}{count}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+Date\_con           23
+Pageviews\_con      23
+Clicks\_con         23
+Enrollments\_con    23
+Payments\_con       23
+Date\_exp           23
+Pageviews\_exp      23
+Clicks\_exp         23
+Enrollments\_exp    23
+Payments\_exp       23
+dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} We calcuate gross conversion and net conversion, then compare the day\PYZhy{}to\PYZhy{}day data from control and experiment group.}
+\PY{c+c1}{\PYZsh{} If the experiment value is larger than the control group, the sign is 1, otherwise 0.}
+\PY{n}{combine}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g\PYZus{}con}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Enrollments\PYZus{}con}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{/}\PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Clicks\PYZus{}con}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{combine}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g\PYZus{}exp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Enrollments\PYZus{}exp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{/}\PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Clicks\PYZus{}exp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{combine}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g\PYZus{}sign}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g\PYZus{}exp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g\PYZus{}con}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{combine}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n\PYZus{}con}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Payments\PYZus{}con}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{/}\PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Clicks\PYZus{}con}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{combine}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n\PYZus{}exp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Payments\PYZus{}exp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{/}\PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Clicks\PYZus{}exp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{combine}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n\PYZus{}sign}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{where}\PY{p}{(}\PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n\PYZus{}exp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZgt{}}\PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n\PYZus{}con}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{combine}\PY{p}{[}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g\PYZus{}sign}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n\PYZus{}sign}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+    g\_sign  n\_sign
+0        0       0
+1        0       1
+2        0       0
+3        0       0
+4        0       1
+5        0       0
+6        0       0
+7        0       0
+8        0       1
+9        0       1
+10       0       0
+11       0       0
+12       0       1
+13       0       0
+14       0       0
+15       0       0
+16       0       0
+17       1       1
+18       1       1
+19       1       0
+20       1       1
+21       0       1
+22       0       1
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{g\PYZus{}sum} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g\PYZus{}sign}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{n\PYZus{}sum} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{combine}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{n\PYZus{}sign}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{total} \PY{o}{=} \PY{n}{combine}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Number of Days where gross conversion in the experiment is larger than that in the control group:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{g\PYZus{}sum}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Number of Days where net conversion in the experiment is larger than that in the control group:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{n\PYZus{}sum}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total number of days:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{total}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Number of Days where gross conversion in the experiment is larger than that in
+the control group: 4
+Number of Days where net conversion in the experiment is larger than that in the
+control group: 10
+Total number of days: 23
+    \end{Verbatim}
+
+    Now let's calculate the p-value using the binomial distribution
+equation.
+
+ \(p(successes )=\frac{n!}{x!(n-x)!}p^x(1-p)^{n-x}\) 
+
+    After we count the number of days in which the experiment has a higher
+metric value than that of the control group (we define this event is a
+``success''), we need to decide if the p-value is statistically
+significant (\textless{} 0.05). On any day, if the event is a
+``success'' or not is random, therefore \emph{p} = 0.5. n is total
+number of days, which is 23. x is the number of days being a ``success''
+(the value in the experiment group is larger than that in the control
+group).
+
+\(p-value\) is the probability of observing an event equal to or more
+extreme than that observed. If we observed 4 successes, the \(p-value\)
+for the test is:
+
+\(P(x<=4)=P(0)+P(1)+P(2)+P(3)+P(4)\).
+
+Because this is a two-tailed test, \(p-value\) will be doubled and
+compared to 0.05.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{stats} \PY{k+kn}{import} \PY{n}{binom}
+\PY{n}{n} \PY{o}{=} \PY{l+m+mi}{23}
+\PY{n}{p} \PY{o}{=} \PY{l+m+mf}{0.5}
+\PY{c+c1}{\PYZsh{} define a function that calculate the two\PYZhy{}tailed p\PYZhy{}value for a given x}
+\PY{k}{def} \PY{n+nf}{twotail\PYZus{}pvalue}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{n}{p}\PY{p}{)}\PY{p}{:}
+    \PY{n}{p\PYZus{}x} \PY{o}{=} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{binom}\PY{o}{.}\PY{n}{pmf}\PY{p}{(}\PY{n}{i}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{n}{p}\PY{p}{)} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{x}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n+nb}{round}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{p\PYZus{}x}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{g\PYZus{}pvalue} \PY{o}{=} \PY{n}{twotail\PYZus{}pvalue}\PY{p}{(}\PY{n}{g\PYZus{}sum}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{n}{p}\PY{p}{)}
+\PY{n}{n\PYZus{}pvalue} \PY{o}{=} \PY{n}{twotail\PYZus{}pvalue}\PY{p}{(}\PY{n}{n\PYZus{}sum}\PY{p}{,}\PY{n}{n}\PY{p}{,}\PY{n}{p}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{g\PYZus{}pvalue}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{n\PYZus{}pvalue}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0.0026
+0.6776
+    \end{Verbatim}
+
+    \begin{longtable}[]{@{}ccc@{}}
+\toprule
+\begin{minipage}[b]{0.21\columnwidth}\centering
+Evaluation metrics\strut
+\end{minipage} & \begin{minipage}[b]{0.29\columnwidth}\centering
+p-value for the sign test\strut
+\end{minipage} & \begin{minipage}[b]{0.42\columnwidth}\centering
+Statiscally significant at alpha=0.05\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.21\columnwidth}\centering
+Gross conversion\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+0.0026\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\centering
+Yes\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.21\columnwidth}\centering
+Net conversion\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\centering
+0.6776\strut
+\end{minipage} & \begin{minipage}[t]{0.42\columnwidth}\centering
+No\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+    The sensitivity of a sign test is usually lower than that of a effect
+size test. Still, we get the same conclusion from the sign test as we
+get from the effect size test above. The change in gross conversion is
+significant, while the change in net conversion is not.
+
+    \hypertarget{conclusion-and-recommendation}{%
+\subsection{7. Conclusion and
+Recommendation}\label{conclusion-and-recommendation}}
+
+    We wanted to determine if making a change after a student clicks the
+``start free trial'' button can have a significant impact on gross
+conversion rate and net conversion. Therefor, we designed an A/B Testing
+experiment. Udacity students (tracked by cookies) were directed randomly
+into two groups, control and experiment. After clicking the ``start free
+trial'' button, the experiment group was asked how many hours per week
+they can devote to learning, while the control group was not.
+
+Three invariant metrics (number of cookies, number of clicks and
+Click-Through-Probability) were chosen and have passed sanity checks.
+Gross conversion (enrollments/cookies) and net conversion
+(payments/cookies) were chosen as evaluation metrics. Practical
+significance threasholds (Dmin) were set for each evaluation metrics.
+
+The null hypothesis H0 that there is no significant difference in the
+evaluation metrics between the two groups. To reject the null
+hypothesis, the difference between the groups should be statitically
+significant, as well as exceed Dmin, for \textbf{all} evaluation
+metrics.
+
+The experiment results showed that gross conversion was found to be
+statisticcaly significant with alpha = 0.05, and exceeded the practical
+significance threahold. Net conversion, on the other hand, is neither
+statistically significant nor practically significant.
+
+    The purpose of the A/B testin experiment was to determine if by adding a
+step qualifying if a student can dedicate enough study time, we can
+improve the overall student experimence, thus reducing the number of
+frustrated students who left the free trial because they didn't have
+enough time; while at the same time without significantly reducing the
+number of students to continue past the free trial. A statistically and
+practically significant drop in gross conversion was observed; however,
+no significant change in net conversion was observed. This means a
+descrease in enrollment, and at the same time no increase in students
+staying past the 14 day free trial leading to payment. Based on the
+results, we do not recommend lauching the change at the moment without
+conducting follow-up experiments.
+
+    \hypertarget{follow-up-experiment}{%
+\subsection{8. Follow-up Experiment}\label{follow-up-experiment}}
+
+    Retention (payments/enrollments) was initially chosen as an evaluation
+metrics but we didn't run the experiment using this metric or calculate
+its statistical significance, because it would take about 5 months to
+achieve the required pageviews. In reality where data are different and
+it might not need 5 months to achieve the required sample size, a
+company might decide retention is an important metric we are interested
+in and we want to keep track of it. If a statistically significant and
+practically significant retention change is observed, it means we are
+seeing more students are staying and paying after the 14 day trial
+period ends, out of all the students who are enrolled, and we would
+recommend launching the experiment.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

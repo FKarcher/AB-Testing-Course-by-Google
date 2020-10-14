@@ -7,3 +7,4 @@ I recently finished the A/B Testing course by Google on Udacity. I highly recomm
 5. Analyze the results, calulate confidernce intervals of evaludation metrics, and draw conclusions.
 
 This notebook is a capstone project for this course. The goal of this capstone project is to utlize the skills learned in this course and apply them to a business case using real life data. We want to gain insights about if adding an extra screening step after a student clicks the "start free trial" button will reduce the number of frustrated students who left the free trial because they couldn't commit enough hours to the course.
+The data analysis was done using Pandas. Feel free to check out my work in the Jupyter notebook.
